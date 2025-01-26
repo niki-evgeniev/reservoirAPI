@@ -1,13 +1,16 @@
-package rest.reservoirapi.appConfig;
+package rest.reservoirapi.service.impl;
 
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+@Service
 public class PdfReader {
 
     public void readPdf(String filepath) throws IOException {
@@ -24,7 +27,10 @@ public class PdfReader {
             String text = pdfTextStripper.getText(document);
             String[] split = text.split(" ");
             int indexStart = 194;
-            System.out.println(LocalDate.now());
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter formatingDate = DateTimeFormatter.ofPattern("ddMMyyyy");
+            String todayFormatedDate = today.format(formatingDate);
+            System.out.println(todayFormatedDate);
 
 //            for (int i = 1; i <= 65; i++) {
 //                System.out.println("Язовир номер " + i);
