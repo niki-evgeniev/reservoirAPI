@@ -2,19 +2,26 @@ package rest.reservoirapi.util;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import rest.reservoirapi.service.impl.PdfReader;
+import rest.reservoirapi.service.impl.DownloadFileService;
+import rest.reservoirapi.service.impl.PdfReaderService;
 
 @Component
 public class pdfRunner implements CommandLineRunner {
 
-    private final PdfReader pdfReader;
+    private final PdfReaderService pdfReaderService;
+    private final DownloadFileService downloadFile;
 
-    public pdfRunner(PdfReader pdfReader) {
-        this.pdfReader = pdfReader;
+    public pdfRunner(PdfReaderService pdfReaderService,  DownloadFileService downloadFile) {
+        this.pdfReaderService = pdfReaderService;
+
+        this.downloadFile = downloadFile;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        pdfReader.readPdf("file");
+        String fileName = downloadFile.downloadReservoirInfo();
+        Thread.sleep(5000);
+        pdfReaderService.readPdf(fileName);
+
     }
 }
