@@ -26,13 +26,14 @@ public class PdfReaderService {
 
                 String text = pdfTextStripper.getText(document);
                 String[] split = text.split("\\s+");
+                String[] split2 = text.split("\n");
                 List<String> list = Arrays.stream(split).toList();
                 boolean iskar = list.contains("Искър");
                 System.out.println(iskar);
                 int indexStart = 164;
 
 
-                for (int i = 1; i <= 15; i++) {
+                for (int i = 1; i <= 20; i++) {
                     switch (split[indexStart]) {
                         case "Ежедневен":
                         case "бюлетин":
@@ -40,6 +41,8 @@ public class PdfReaderService {
                         case "състоянието":
                         case "на":
                         case "водите":
+                        case "Кокаляне":
+                        case "-":
                             indexStart++;
                             break;
                         case "4":
@@ -54,7 +57,11 @@ public class PdfReaderService {
                                 System.out.println("Име язовир " + split[indexStart]);
                                 indexStart++;
                             }
-                            System.out.println("Общ обем " + split[indexStart++]);
+                            if (split[indexStart].equals("-")) {
+                                indexStart++;
+                            }
+                            String obem = split[indexStart++];
+                            System.out.println("Общ обем " + obem);
                             System.out.println("Мъртъв Санитарен обем " + split[indexStart++]);
                             System.out.println("Наличен обем");
                             System.out.println("млн.м3 " + split[indexStart++]);
@@ -66,6 +73,7 @@ public class PdfReaderService {
                             System.out.println("Ср. денонощен разход " + split[indexStart++]);
                             System.out.println("ТЕНДЕНЦИЯ - " + split[indexStart++]);
                             indexStart = indexStart + 2;
+
                     }
 
                     System.out.println(split.length);
