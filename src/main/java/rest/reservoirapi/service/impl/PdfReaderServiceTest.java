@@ -18,7 +18,6 @@ public class PdfReaderServiceTest {
             , "Жребчево", "Малко Шарково", "Домлян", "Пясъчник", "Тополница", "Тракиец", "Пчелина", "Александър Стамболийски",
             "Копринка", "Белмекен-Чаира", "Белмекен", "Чаира", "Голям Беглик-Широка поляна", "Широка поляна", "Беглика",
             "Тошков Чарк", "Батак", "Доспат", "Цанков камък", "Въча", "Кричим", "Кърджали", "Студен кладенец", "Ивайловград");
-    //"Голям Беглик-Широка поляна"
 
     public void readPdf(String filepath) throws IOException {
 
@@ -33,15 +32,13 @@ public class PdfReaderServiceTest {
                 pdfTextStripper.setEndPage(5);
 
                 String text = pdfTextStripper.getText(document);
-                String[] split = text.split("\n");
-                int indexStart = 66; //66
-                Map<String, List<Double>> reservoirInfo = new LinkedHashMap<>();
+                String[] getAllLine = text.split("\n");
+                int indexStart = 66;
+                Map<String, List<Double>> reservoirInfoMap = new LinkedHashMap<>();
 
 
                 for (int i = 0; i <= 72; i++) {
-                    String[] wordSplit = split[indexStart].split("\\s+");
-                    System.out.println(i);
-                    System.out.println(indexStart);
+                    String[] wordSplit = getAllLine[indexStart].split("\\s+");
                     if (wordSplit.length >= 5) {
                         int indexWordSplit = 2;
                         String reservoirName = wordSplit[indexWordSplit++];
@@ -54,45 +51,67 @@ public class PdfReaderServiceTest {
                             reservoirName = reservoirName + wordSplit[indexWordSplit++];
                         }
 
-                        if (reservoirName.startsWith("Голям")){
+                        if (reservoirName.startsWith("Голям")) {
                             reservoirName = reservoirName + " " + wordSplit[indexWordSplit++];
-                            reservoirName = reservoirName + " " +  wordSplit[indexWordSplit++];
+                            reservoirName = reservoirName + " " + wordSplit[indexWordSplit++];
                             System.out.println();
                         }
                         if (nameOfReservoir.contains(reservoirName)) {
-                            double totalVolume = Double.parseDouble(wordSplit[indexWordSplit++].replace(",", "."));
-                            double minimumFlowVolume = Double.parseDouble(wordSplit[indexWordSplit++].replace(",", "."));
-                            indexWordSplit++;
-                            double fillPercentage = Double.parseDouble(wordSplit[indexWordSplit++].replace(",", ".")
-                                    .replace("%", ""));
-                            double availableVolume = Double.parseDouble(wordSplit[indexWordSplit++].replace(",", "."));
-                            double volumePercentage = Double.parseDouble(wordSplit[indexWordSplit++].replace(",", ".")
-                                    .replace("%", ""));
+                            Result result = getReservoirDetails(wordSplit, indexWordSplit);
 
 
-                            reservoirInfo.putIfAbsent(reservoirName, new ArrayList<>());
-                            reservoirInfo.get(reservoirName).add(totalVolume);
-                            reservoirInfo.get(reservoirName).add(minimumFlowVolume);
-                            reservoirInfo.get(reservoirName).add(fillPercentage);
-                            reservoirInfo.get(reservoirName).add(availableVolume);
-                            reservoirInfo.get(reservoirName).add(volumePercentage);
+                            putToReservoirInfoMap(reservoirInfoMap, reservoirName, result.totalVolume(),
+                                    result.minimumFlowVolume(), result.fillPercentage(),
+                                    result.availableVolume(), result.volumePercentage());
                         }
                     }
                     indexStart++;
                 }
 
-                for (Map.Entry<String, List<Double>> stringListEntry : reservoirInfo.entrySet()) {
+                for (Map.Entry<String, List<Double>> stringListEntry : reservoirInfoMap.entrySet()) {
                     String key = stringListEntry.getKey();
                     List<Double> value = stringListEntry.getValue();
                     System.out.println();
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error loading PDF: " + e.getMessage());
             }
         } else {
             System.err.println("File not exist");
         }
+    }
+
+    private static Result getReservoirDetails(String[] wordSplit, int indexWordSplit) {
+        double totalVolume = Double.parseDouble(wordSplit[indexWordSplit++]
+                .replace(",", "."));
+        double minimumFlowVolume = Double.parseDouble(wordSplit[indexWordSplit++]
+                .replace(",", "."));
+        indexWordSplit++;
+        double fillPercentage = Double.parseDouble(wordSplit[indexWordSplit++]
+                .replace(",", ".")
+                .replace("%", ""));
+        double availableVolume = Double.parseDouble(wordSplit[indexWordSplit++]
+                .replace(",", "."));
+        double volumePercentage = Double.parseDouble(wordSplit[indexWordSplit++]
+                .replace(",", ".")
+                .replace("%", ""));
+        return new Result(totalVolume, minimumFlowVolume, fillPercentage, availableVolume, volumePercentage);
+    }
+
+    private record Result(double totalVolume, double minimumFlowVolume, double fillPercentage,
+                          double availableVolume, double volumePercentage) {
+    }
+
+    private static void putToReservoirInfoMap(Map<String, List<Double>> reservoirInfo, String reservoirName,
+                                              double totalVolume, double minimumFlowVolume, double fillPercentage,
+                                              double availableVolume, double volumePercentage) {
+        reservoirInfo.putIfAbsent(reservoirName, new ArrayList<>());
+        reservoirInfo.get(reservoirName).add(totalVolume);
+        reservoirInfo.get(reservoirName).add(minimumFlowVolume);
+        reservoirInfo.get(reservoirName).add(fillPercentage);
+        reservoirInfo.get(reservoirName).add(availableVolume);
+        reservoirInfo.get(reservoirName).add(volumePercentage);
     }
 
     private static boolean isWord(String word) {

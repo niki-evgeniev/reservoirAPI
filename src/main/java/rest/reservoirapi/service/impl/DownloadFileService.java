@@ -45,9 +45,7 @@ public class DownloadFileService {
         connection.setConnectTimeout(5000);
         connection.setReadTimeout(5000);
 
-        // Проверка дали връзката е успешна (HTTP 200)
         if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            // Увери се, че папката `static` съществува
             Files.createDirectories(Paths.get(saveDir));
 
             try (InputStream inputStream = connection.getInputStream();
