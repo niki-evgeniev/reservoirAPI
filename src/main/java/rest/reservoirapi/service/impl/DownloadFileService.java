@@ -25,7 +25,6 @@ public class DownloadFileService {
 
 //        String dateNow = timeService.getDateNow();
         String dateNow = "05022025";
-
         String saveDir = "src/main/resources/static/download/"; // Директория за запазване на файла
         String fileName = dateNow + "_bulletin.pdf"; // Име на файла
         System.out.println(pdfUrl);

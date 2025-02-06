@@ -12,17 +12,17 @@ import java.util.UUID;
 public class BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID uuid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
 
     public BaseEntity() {
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(UUID id) {
+        this.id = id;
     }
 }
