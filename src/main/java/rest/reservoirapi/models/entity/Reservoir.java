@@ -4,6 +4,7 @@ package rest.reservoirapi.models.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -47,6 +48,9 @@ public class Reservoir extends BaseEntity {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @ManyToOne
+    private SavedFiles savedFiles;
 
     public Reservoir() {
     }
@@ -121,6 +125,14 @@ public class Reservoir extends BaseEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public SavedFiles getSavedFiles() {
+        return savedFiles;
+    }
+
+    public void setSavedFiles(SavedFiles savedFiles) {
+        this.savedFiles = savedFiles;
     }
 }
 

@@ -5,10 +5,13 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
 import rest.reservoirapi.models.entity.Reservoir;
+import rest.reservoirapi.models.entity.SavedFiles;
 import rest.reservoirapi.repository.ReservoirRepository;
+import rest.reservoirapi.repository.SavedFileRepository;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -21,9 +24,11 @@ public class PdfReaderService {
             "Копринка", "Белмекен-Чаира", "Белмекен", "Чаира", "Голям Беглик-Широка поляна", "Широка поляна", "Беглика",
             "Тошков Чарк", "Батак", "Доспат", "Цанков камък", "Въча", "Кричим", "Кърджали", "Студен кладенец", "Ивайловград");
     private final ReservoirRepository reservoirRepository;
+    private final SavedFileRepository savedFileRepository;
 
-    public PdfReaderService(ReservoirRepository reservoirRepository) {
+    public PdfReaderService(ReservoirRepository reservoirRepository, SavedFileRepository savedFileRepository) {
         this.reservoirRepository = reservoirRepository;
+        this.savedFileRepository = savedFileRepository;
     }
 
     public void readPdf(String filepath) throws IOException {
@@ -42,11 +47,22 @@ public class PdfReaderService {
                 String[] getAllLine = text.split("\n");
                 int indexStart = 66;
                 Map<String, List<Double>> reservoirInfoMap = new LinkedHashMap<>();
+                Optional<SavedFiles> byFileName = savedFileRepository.findByFileName(filepath);
+                SavedFiles savedFiles = new SavedFiles();
 
+                if (byFileName.isEmpty()) {
+                    savedFiles.setFileName(filepath);
+                    savedFiles.setAdded(LocalDate.now());
+
+                } else {
+                    System.err.println("FILE IN DB EXIST");
+                    return;
+                }
 
                 for (int i = 0; i <= 72; i++) {
                     String[] wordSplit = getAllLine[indexStart].split("\\s+");
                     if (wordSplit.length >= 5) {
+
                         int indexWordSplit = 2;
                         String reservoirName = wordSplit[indexWordSplit++];
                         if (isWord(wordSplit[indexWordSplit])) {
@@ -73,13 +89,14 @@ public class PdfReaderService {
                     }
                     indexStart++;
                 }
-
+//                TODO CHANGE MAP WITH LIST<RESERVOIR>
                 for (Map.Entry<String, List<Double>> stringListEntry : reservoirInfoMap.entrySet()) {
                     String name = stringListEntry.getKey();
                     List<Double> valueOfReservoir = stringListEntry.getValue();
                     Reservoir reservoir = new Reservoir();
 
-                    if (valueOfReservoir.size() == 5){
+
+                    if (valueOfReservoir.size() == 5) {
                         reservoir.setUuid(UUID.randomUUID());
                         reservoir.setName(name);
                         reservoir.setActive(true);
@@ -89,11 +106,14 @@ public class PdfReaderService {
                         reservoir.setAvailableVolume(valueOfReservoir.get(3));
                         reservoir.setVolumePercentage(valueOfReservoir.get(4));
 
+                        reservoir.setSavedFiles(savedFiles);
                         reservoirRepository.save(reservoir);
                         System.out.println("SUCC SAVE TO DB");
-
                     }
                 }
+                savedFiles.setSaved(true);
+                savedFileRepository.save(savedFiles);
+
 
             } catch (IOException e) {
                 System.err.println("Error loading PDF: " + e.getMessage());
