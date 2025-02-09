@@ -2,6 +2,7 @@ package rest.reservoirapi.service.impl;
 
 
 import org.springframework.stereotype.Service;
+import rest.reservoirapi.service.DownloadFileService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,20 +14,22 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Service
-public class DownloadFileService {
+public class DownloadFileServiceImpl implements DownloadFileService {
 
-    private final TimeService timeService;
+    private final TimeServiceImpl timeServiceImpl;
 
-    public DownloadFileService(TimeService timeService) {
-        this.timeService = timeService;
+    public DownloadFileServiceImpl(TimeServiceImpl timeServiceImpl) {
+        this.timeServiceImpl = timeServiceImpl;
     }
 
+    @Override
     public String downloadReservoirInfo() {
+//        String dateNow = timeServiceImpl.getDateNow();
 
-//        String dateNow = timeService.getDateNow();
-        String dateNow = "05022025";
-        String saveDir = "src/main/resources/static/download/"; // Директория за запазване на файла
-        String fileName = dateNow + "_bulletin.pdf"; // Име на файла
+        String dateNow = "07022025";
+
+        String saveDir = "src/main/resources/static/download/";
+        String fileName = dateNow + "_bulletin.pdf";
         System.out.println(pdfUrl);
         try {
             downloadFile(pdfUrl, saveDir, fileName);
@@ -35,6 +38,7 @@ public class DownloadFileService {
             System.err.println("Грешка при изтегляне на PDF: " + e.getMessage());
         }
         return fileName;
+
     }
 
     public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException {

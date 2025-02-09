@@ -8,6 +8,7 @@ import rest.reservoirapi.models.entity.Reservoir;
 import rest.reservoirapi.models.entity.SavedFiles;
 import rest.reservoirapi.repository.ReservoirRepository;
 import rest.reservoirapi.repository.SavedFileRepository;
+import rest.reservoirapi.service.PdfReaderService;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class PdfReaderService {
+public class PdfReaderServiceImpl implements PdfReaderService {
 
     private final List<String> nameOfReservoir = List.of("Искър", "Бели Искър", "Среченска бара", "Христо Смирненски",
             "Йовковци", "Тича", "Камчия", "Ясна поляна", "Асеновец", "Боровица", "Студена", "Дяково", "Порой", "Ахелой", "Панчарево",
@@ -26,12 +27,13 @@ public class PdfReaderService {
     private final ReservoirRepository reservoirRepository;
     private final SavedFileRepository savedFileRepository;
 
-    public PdfReaderService(ReservoirRepository reservoirRepository, SavedFileRepository savedFileRepository) {
+    public PdfReaderServiceImpl(ReservoirRepository reservoirRepository, SavedFileRepository savedFileRepository) {
         this.reservoirRepository = reservoirRepository;
         this.savedFileRepository = savedFileRepository;
     }
 
-    public void readPdf(String filepath) throws IOException {
+    @Override
+    public void readPdf(String filepath) {
 
         String fileName = "C:/Users/Nikolay/Documents/GitHub/reservoirAPI/src/main/resources/static/download/" + filepath;
         File file = new File(fileName);
@@ -105,15 +107,14 @@ public class PdfReaderService {
                         reservoir.setFillPercentage(valueOfReservoir.get(2));
                         reservoir.setAvailableVolume(valueOfReservoir.get(3));
                         reservoir.setVolumePercentage(valueOfReservoir.get(4));
-
+                        savedFiles.setSaved(true);
+                        savedFileRepository.save(savedFiles);
                         reservoir.setSavedFiles(savedFiles);
                         reservoirRepository.save(reservoir);
-                        System.out.println("SUCC SAVE TO DB");
                     }
                 }
-                savedFiles.setSaved(true);
-                savedFileRepository.save(savedFiles);
 
+                System.out.println("SUCC SAVE TO DB " + filepath);
 
             } catch (IOException e) {
                 System.err.println("Error loading PDF: " + e.getMessage());
