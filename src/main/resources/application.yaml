@@ -69,4 +69,5 @@ logging:
 #    org.apache.tomcat.util.net: DEBUG
 
 
-
+server:
+  port: 8181
