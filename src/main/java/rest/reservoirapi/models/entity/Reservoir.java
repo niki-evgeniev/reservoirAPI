@@ -11,7 +11,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Types;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Table
@@ -26,10 +26,10 @@ public class Reservoir extends BaseEntity {
     private UUID uuid;
 
     @Column(name = "added_date", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @CreationTimestamp
-    private LocalDateTime addedDate;
+    private LocalDate addedDate;
 
     @Column(name = "total_volume", nullable = false)
     private double totalVolume;
@@ -71,11 +71,11 @@ public class Reservoir extends BaseEntity {
         this.uuid = uuid;
     }
 
-    public LocalDateTime getAddedDate() {
+    public LocalDate getAddedDate() {
         return addedDate;
     }
 
-    public void setAddedDate(LocalDateTime addedDate) {
+    public void setAddedDate(LocalDate addedDate) {
         this.addedDate = addedDate;
     }
 
