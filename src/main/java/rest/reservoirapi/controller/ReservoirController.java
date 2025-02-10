@@ -22,8 +22,7 @@ public class ReservoirController {
 
     @GetMapping("/info")
     ResponseEntity<?> getInfoReservoir(){
-        List<ReservoirInformation> info = informationService.getInformation();
-        System.out.println();
-        return ResponseEntity.ok(info);
+        List<ReservoirInformation> info2 = informationService.getLastInfo();
+        return ResponseEntity.ok(info2);
     }
 }

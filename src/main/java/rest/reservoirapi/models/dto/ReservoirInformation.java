@@ -1,5 +1,9 @@
 package rest.reservoirapi.models.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ReservoirInformation {
@@ -7,6 +11,8 @@ public class ReservoirInformation {
     private String name;
 
     private UUID uuid;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate addedDate;
 
     private double totalVolume;
 
@@ -35,6 +41,14 @@ public class ReservoirInformation {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public LocalDate getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDate addedDate) {
+        this.addedDate = addedDate;
     }
 
     public double getTotalVolume() {

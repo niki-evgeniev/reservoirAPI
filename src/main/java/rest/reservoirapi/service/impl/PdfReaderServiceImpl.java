@@ -3,6 +3,7 @@ package rest.reservoirapi.service.impl;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import rest.reservoirapi.models.entity.Reservoir;
 import rest.reservoirapi.models.entity.SavedFiles;
@@ -13,6 +14,7 @@ import rest.reservoirapi.service.PdfReaderService;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -54,7 +56,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
 
                 if (byFileName.isEmpty()) {
                     savedFiles.setFileName(filepath);
-                    savedFiles.setAdded(LocalDate.now());
+                    savedFiles.setAddedDate(LocalDate.now());
 
                 } else {
                     System.err.println("FILE IN DB EXIST");
@@ -96,7 +98,6 @@ public class PdfReaderServiceImpl implements PdfReaderService {
                     String name = stringListEntry.getKey();
                     List<Double> valueOfReservoir = stringListEntry.getValue();
                     Reservoir reservoir = new Reservoir();
-
 
                     if (valueOfReservoir.size() == 5) {
                         reservoir.setUuid(UUID.randomUUID());

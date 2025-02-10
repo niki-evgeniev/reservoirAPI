@@ -7,4 +7,6 @@ import java.util.List;
 public interface InformationService {
 
     List<ReservoirInformation> getInformation();
+
+    List<ReservoirInformation> getLastInfo();
 }
