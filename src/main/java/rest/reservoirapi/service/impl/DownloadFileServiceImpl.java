@@ -27,7 +27,6 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 //        String dateNow = timeServiceImpl.getDateNow();
 
         String dateNow = "07022025";
-
         String saveDir = "src/main/resources/static/download/";
         String fileName = dateNow + "_bulletin.pdf";
         System.out.println(pdfUrl);

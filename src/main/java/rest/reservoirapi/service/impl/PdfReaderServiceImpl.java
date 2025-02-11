@@ -49,7 +49,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
 
                 String text = pdfTextStripper.getText(document);
                 String[] getAllLine = text.split("\n");
-                int indexStart = 66;
+                int indexStart = 60;
                 Map<String, List<Double>> reservoirInfoMap = new LinkedHashMap<>();
                 Optional<SavedFiles> byFileName = savedFileRepository.findByFileName(filepath);
                 SavedFiles savedFiles = new SavedFiles();
@@ -63,7 +63,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
                     return;
                 }
 
-                for (int i = 0; i <= 72; i++) {
+                for (int i = 0; i <= 80; i++) {
                     String[] wordSplit = getAllLine[indexStart].split("\\s+");
                     if (wordSplit.length >= 5) {
 
