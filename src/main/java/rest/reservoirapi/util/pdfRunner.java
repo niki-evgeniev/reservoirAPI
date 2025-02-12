@@ -21,10 +21,10 @@ public class pdfRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        String fileName = downloadFile.downloadReservoirInfo();
-        String dateNow = timeService.getDateNow();
-        Thread.sleep(1000);
-        pdfReaderService.readPdf(fileName);
+//        String fileName = downloadFile.downloadReservoirInfo();
+//        String dateNow = timeService.getDateNow();
+//        Thread.sleep(1000);
+//        pdfReaderService.readPdf(fileName);
 
     }
 }

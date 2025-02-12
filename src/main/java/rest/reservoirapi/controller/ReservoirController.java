@@ -1,6 +1,9 @@
 package rest.reservoirapi.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +18,18 @@ import java.util.List;
 public class ReservoirController {
 
     private final InformationService informationService;
+    private final Logger LOGGER = LoggerFactory.getLogger(ReservoirController.class);
 
     public ReservoirController(InformationService informationService) {
         this.informationService = informationService;
     }
 
     @GetMapping("/info")
-    ResponseEntity<?> getInfoReservoir(){
-        List<ReservoirInformation> info2 = informationService.getLastInfo();
-        return ResponseEntity.ok(info2);
+    ResponseEntity<?> getInfoReservoir(HttpServletRequest request){
+        String ipAddress = request.getRemoteAddr();
+        List<ReservoirInformation> info = informationService.getLastInfo();
+        LOGGER.warn("GET Request from {}", ipAddress);
+        System.out.println("Sending request");
+        return ResponseEntity.ok(info);
     }
 }
