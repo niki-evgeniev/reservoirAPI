@@ -37,7 +37,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
     @Override
     public void readPdf(String filepath) {
 
-        String fileName = "C:/Users/Nikolay/Documents/GitHub/reservoirAPI/src/main/resources/static/download/" + filepath;
+        String fileName = "./Download/" + filepath;
         File file = new File(fileName);
         System.out.println(nameOfReservoir.size());
         if (file.exists()) {
