@@ -20,7 +20,7 @@ public class DownloaderScheduler {
         this.pdfReaderService = pdfReaderService;
     }
 
-    @Scheduled(cron = "0 0 12 * * MON-FRI")
+    @Scheduled(cron = "0 02 10 * * MON-FRI")
     public void DownloadInformation() throws InterruptedException {
         String fileName = downloadFileService.downloadReservoirInfo();
         Thread.sleep(1000);
