@@ -2,6 +2,8 @@ package rest.reservoirapi.service.impl;
 
 
 import org.springframework.stereotype.Service;
+import rest.reservoirapi.models.entity.SavedFiles;
+import rest.reservoirapi.repository.SavedFileRepository;
 import rest.reservoirapi.service.DownloadFileService;
 
 import java.io.File;
@@ -16,21 +18,26 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class DownloadFileServiceImpl implements DownloadFileService {
 
     private final TimeServiceImpl timeServiceImpl;
+    private final SavedFileRepository savedFileRepository;
 
-    public DownloadFileServiceImpl(TimeServiceImpl timeServiceImpl) {
+    public DownloadFileServiceImpl(TimeServiceImpl timeServiceImpl, SavedFileRepository savedFileRepository) {
         this.timeServiceImpl = timeServiceImpl;
+        this.savedFileRepository = savedFileRepository;
     }
 
     @Override
     public String downloadReservoirInfo() {
         String dateNow = timeServiceImpl.getDateNow();
 
-//        String dateNow = "11022025";
+//        String dateNow = "14022025";
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/" + dateNow + "_Bulletin_Daily.pdf";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.pdf";
         System.out.println(pdfUrl);
@@ -44,32 +51,13 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     }
 
-//    public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException {
-////        URL url = new URL(fileURL);
-//        URI uri = URI.create(fileURL);
-//        URL url = uri.toURL();
-//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setRequestMethod("GET");
-//        connection.setConnectTimeout(5000);
-//        connection.setReadTimeout(5000);
-//
-//        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//            Files.createDirectories(Paths.get(saveDir));
-//
-//            try (InputStream inputStream = connection.getInputStream();
-//                 FileOutputStream outputStream = new FileOutputStream(new File(saveDir, fileName))) {
-//                byte[] buffer = new byte[1024];
-//                int bytesRead;
-//                while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                    outputStream.write(buffer, 0, bytesRead);
-//                }
-//            }
-//        } else {
-//            throw new IOException("Сървърът върна код: " + connection.getResponseCode());
-//        }
-//    }
+    @Override
+    public boolean checkFileIsDownload() {
+        String dateNow = timeServiceImpl.getDateNow();
+        Optional<SavedFiles> isFileDownloaded = savedFileRepository.findByAddedDate(LocalDate.parse(dateNow));
+        return isFileDownloaded.isPresent();
+    }
 
-    // Testing HttpRequest
     public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException, InterruptedException {
         URI uri = URI.create(fileURL);
         HttpClient client = HttpClient.newHttpClient();
