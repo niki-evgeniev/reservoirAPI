@@ -1,6 +1,7 @@
 package rest.reservoirapi.models.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Negative;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,6 +18,9 @@ public class SavedFiles extends BaseEntity {
 
     @Column(name = "is_saved")
     private boolean isSaved = false;
+
+    @Column(name = "counter")
+    private long counter;
 
     @OneToMany(mappedBy = "savedFiles", fetch = FetchType.EAGER)
     List<Reservoir> reservoirList;
@@ -54,5 +58,13 @@ public class SavedFiles extends BaseEntity {
 
     public void setReservoirList(List<Reservoir> reservoirList) {
         this.reservoirList = reservoirList;
+    }
+
+    public long getCounter() {
+        return counter;
+    }
+
+    public void setCounter(long counter) {
+        this.counter = counter;
     }
 }

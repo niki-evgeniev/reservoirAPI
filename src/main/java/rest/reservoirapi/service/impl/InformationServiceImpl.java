@@ -44,7 +44,12 @@ public class InformationServiceImpl implements InformationService {
     public List<ReservoirInformation> getLastInfo() {
 
         List<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
-        if (lastSavedFile.isEmpty()){
+        long counterIncrease = lastSavedFile.getFirst().getCounter() + 1L;
+        lastSavedFile.getFirst().setCounter(counterIncrease);
+        savedFileRepository.save(lastSavedFile.getFirst());
+        //TODO CHANGE LIST WITH OPTIONAL
+//        Optional<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
+        if (lastSavedFile.isEmpty()) {
             System.err.println("Last added file not exist");
             return List.of();
         }
