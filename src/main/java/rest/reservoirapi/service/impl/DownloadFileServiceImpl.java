@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -35,9 +35,9 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Override
     public String downloadReservoirInfo() {
         String dateNow = timeServiceImpl.getDateNow();
-
-//        String dateNow = "14022025";
-        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/" + dateNow + "_Bulletin_Daily.pdf";
+//        String dateNow = "17022025";
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
+                + dateNow + "_Bulletin_Daily.pdf";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.pdf";
         System.out.println(pdfUrl);
@@ -45,20 +45,24 @@ public class DownloadFileServiceImpl implements DownloadFileService {
             downloadFile(pdfUrl, saveDir, fileName);
             System.out.println("Файлът е изтеглен успешно в: " + saveDir + fileName);
         } catch (IOException | InterruptedException e) {
-            System.err.println("Грешка при изтегляне на PDF: " + e.getMessage());
+//            System.err.println("Грешка при изтегляне на PDF: " + e.getMessage());
+            System.err.println("Линкът не работи: " + e.getMessage());
+            fileName = "error";
         }
         return fileName;
-
     }
 
     @Override
     public boolean checkFileIsDownload() {
         String dateNow = timeServiceImpl.getDateNow();
-        Optional<SavedFiles> isFileDownloaded = savedFileRepository.findByAddedDate(LocalDate.parse(dateNow));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        LocalDate localDate = LocalDate.parse(dateNow, formatter);
+        Optional<SavedFiles> isFileDownloaded = savedFileRepository.findByAddedDate(localDate);
         return isFileDownloaded.isPresent();
     }
 
-    public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException, InterruptedException {
+    public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException,
+            InterruptedException {
         URI uri = URI.create(fileURL);
         HttpClient client = HttpClient.newHttpClient();
 
