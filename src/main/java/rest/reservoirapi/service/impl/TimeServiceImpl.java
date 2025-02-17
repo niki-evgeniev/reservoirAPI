@@ -13,7 +13,6 @@ public class TimeServiceImpl implements TimeService {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatingDate = DateTimeFormatter.ofPattern("ddMMyyyy");
         String todayFormatedDate = today.format(formatingDate);
-        System.out.println(todayFormatedDate);
         return todayFormatedDate;
     }
 }
