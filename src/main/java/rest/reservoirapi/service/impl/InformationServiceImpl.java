@@ -10,7 +10,6 @@ import rest.reservoirapi.repository.SavedFileRepository;
 import rest.reservoirapi.service.InformationService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,9 +43,7 @@ public class InformationServiceImpl implements InformationService {
     public List<ReservoirInformation> getLastInfo() {
 
         List<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
-        long counterIncrease = lastSavedFile.getFirst().getCounter() + 1L;
-        lastSavedFile.getFirst().setCounter(counterIncrease);
-        savedFileRepository.save(lastSavedFile.getFirst());
+        increaseCounter(lastSavedFile);
         //TODO CHANGE LIST WITH OPTIONAL
 //        Optional<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
         if (lastSavedFile.isEmpty()) {
@@ -54,12 +51,30 @@ public class InformationServiceImpl implements InformationService {
             return List.of();
         }
         List<ReservoirInformation> infoReservoir = new ArrayList<>();
-
         for (SavedFiles savedFiles : lastSavedFile) {
             for (Reservoir reservoir : savedFiles.getReservoirList()) {
                 infoReservoir.add(modelMapper.map(reservoir, ReservoirInformation.class));
             }
         }
         return infoReservoir;
+    }
+
+    @Override
+    public ReservoirInformation getInformationForReservoir(String name) {
+        Optional<Reservoir> reservoirInfo = reservoirRepository.findTopByNameOrderByIdDesc(name);
+        if (reservoirInfo.isPresent()) {
+            ReservoirInformation getInformation = modelMapper.map(reservoirInfo, ReservoirInformation.class);
+            List<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
+            increaseCounter(lastSavedFile);
+            return getInformation;
+        }
+        return null;
+    }
+
+    private void increaseCounter(List<SavedFiles> lastSavedFile) {
+        SavedFiles increaseCounter = lastSavedFile.getFirst();
+        long currentCounter = increaseCounter.getCounter() + 1L;
+        increaseCounter.setCounter(currentCounter);
+        savedFileRepository.save(increaseCounter);
     }
 }

@@ -3,7 +3,6 @@ package rest.reservoirapi.models.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ReservoirInformation {

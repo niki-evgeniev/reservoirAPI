@@ -9,4 +9,6 @@ public interface InformationService {
     List<ReservoirInformation> getInformation();
 
     List<ReservoirInformation> getLastInfo();
+
+    ReservoirInformation getInformationForReservoir(String name);
 }
