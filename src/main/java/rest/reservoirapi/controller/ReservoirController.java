@@ -35,9 +35,10 @@ public class ReservoirController {
     }
 
 
-    @GetMapping("/info/{res}")
-    ResponseEntity<?> getReservoirInfo(@PathVariable("res") String res) {
-        ReservoirInformation reservoirInformation = informationService.getInformationForReservoir(res);
+    @GetMapping("/info/{name}")
+    ResponseEntity<?> getReservoirInfo(@PathVariable("name") String name) {
+        ReservoirInformation reservoirInformation = informationService.getInformationForReservoir(name);
+        System.out.println("Sending request from RESERVOIR DETAILS");
         return ResponseEntity.ok(reservoirInformation);
     }
 }

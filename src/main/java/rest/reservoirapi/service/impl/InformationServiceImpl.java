@@ -31,11 +31,9 @@ public class InformationServiceImpl implements InformationService {
     public List<ReservoirInformation> getInformation() {
         List<Reservoir> all = reservoirRepository.findAll();
         List<ReservoirInformation> info = new ArrayList<>();
-
         for (Reservoir reservoir : all) {
             info.add(modelMapper.map(reservoir, ReservoirInformation.class));
         }
-
         return info;
     }
 
