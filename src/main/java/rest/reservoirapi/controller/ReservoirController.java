@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import rest.reservoirapi.models.dto.ReservoirInformation;
 import rest.reservoirapi.service.InformationService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -38,7 +40,10 @@ public class ReservoirController {
     @GetMapping("/info/{name}")
     ResponseEntity<?> getReservoirInfo(@PathVariable("name") String name) {
         ReservoirInformation reservoirInformation = informationService.getInformationForReservoir(name);
-        System.out.println("Sending request from RESERVOIR DETAILS");
+        LocalDateTime time = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+        String formattedDate = time.format(formatter);
+        System.out.println("Sending request from RESERVOIR DETAILS " + formattedDate);
         return ResponseEntity.ok(reservoirInformation);
     }
 }
