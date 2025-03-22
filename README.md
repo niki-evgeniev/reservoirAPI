@@ -1,5 +1,5 @@
 # **Reservoir Info API**
-A Spring Boot REST API that collects water volume data from reservoirs in Bulgaria, processes the data, and sends it to [CarpMap](https://carpmap.online).
+A Spring Boot REST API that collects water volume data from reservoirs in Bulgaria, processes the data, and sends it to [CarpMap](https://carpmap.bg).
 
 CarpMap Repository -> [CarpMap](https://github.com/niki-evgeniev/CarpMap)
 
