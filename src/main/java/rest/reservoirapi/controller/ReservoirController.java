@@ -31,8 +31,9 @@ public class ReservoirController {
     ResponseEntity<?> getInfoReservoir(HttpServletRequest request) {
         String ipAddress = request.getRemoteAddr();
         List<ReservoirInformation> info = informationService.getLastInfo();
-        LOGGER.warn("GET Request from {}", ipAddress);
-        System.out.println("Sending request");
+        String formattedDate = getString();
+//        LOGGER.warn("GET Request from {}", ipAddress);
+        System.out.println("Sending request from RESERVOIR DETAILS " + formattedDate);
         return ResponseEntity.ok(info);
     }
 
@@ -40,10 +41,15 @@ public class ReservoirController {
     @GetMapping("/info/{name}")
     ResponseEntity<?> getReservoirInfo(@PathVariable("name") String name) {
         ReservoirInformation reservoirInformation = informationService.getInformationForReservoir(name);
+        String formattedDate = getString();
+        System.out.println("Sending request from RESERVOIR DETAIL = " + name + " " + formattedDate);
+        return ResponseEntity.ok(reservoirInformation);
+    }
+
+    private static String getString() {
         LocalDateTime time = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
         String formattedDate = time.format(formatter);
-        System.out.println("Sending request from RESERVOIR DETAILS " + formattedDate);
-        return ResponseEntity.ok(reservoirInformation);
+        return formattedDate;
     }
 }

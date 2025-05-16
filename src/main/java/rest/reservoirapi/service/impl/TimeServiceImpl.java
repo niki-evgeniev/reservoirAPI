@@ -8,8 +8,9 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 public class TimeServiceImpl implements TimeService {
+
     @Override
-    public String getDateNow (){
+    public String getDateNow() {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatingDate = DateTimeFormatter.ofPattern("ddMMyyyy");
         String todayFormatedDate = today.format(formatingDate);

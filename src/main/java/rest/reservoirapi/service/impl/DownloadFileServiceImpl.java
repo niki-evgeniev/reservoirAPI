@@ -35,7 +35,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Override
     public String downloadReservoirInfo() {
         String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "27022025";
+//        String dateNow = "16052025"; //only for manual download
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.pdf";
         String saveDir = "./Download/";
@@ -45,7 +45,6 @@ public class DownloadFileServiceImpl implements DownloadFileService {
             downloadFile(pdfUrl, saveDir, fileName);
             System.out.println("Файлът е изтеглен успешно в: " + saveDir + fileName);
         } catch (IOException | InterruptedException e) {
-//            System.err.println("Грешка при изтегляне на PDF: " + e.getMessage());
             System.err.println("Линкът не работи: " + e.getMessage());
             fileName = "error";
         }

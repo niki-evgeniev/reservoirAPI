@@ -38,6 +38,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
     public void readPdf(String filepath) {
 
         String fileName = "./Download/" + filepath;
+//        String fileName = "./Download/" + "16052025_bulletin2.pdf"; //only for manual read
         File file = new File(fileName);
         System.out.println(nameOfReservoir.size());
         if (file.exists()) {

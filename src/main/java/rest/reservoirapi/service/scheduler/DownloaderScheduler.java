@@ -20,10 +20,8 @@ public class DownloaderScheduler {
         this.pdfReaderService = pdfReaderService;
     }
 
-    //    @Scheduled(cron = "0 02 10 * * MON-FRI")
-//    @Scheduled(cron = "0 0 8-19/2 * * MON-FRI")
-//    @Scheduled(cron = "0 0 8-20/2 * * MON-FRI", zone = "Europe/Sofia")
-    @Scheduled(cron = "0 0 11,12,13,14,15,16,17,18,19 * * MON-FRI", zone = "Europe/Sofia")
+//    @Scheduled(cron = "0 0 11,12,13,14,15,16,17,18,19 * * MON-FRI", zone = "Europe/Sofia")
+    @Scheduled(cron = "0 */10 11-19 * * MON-FRI", zone = "Europe/Sofia")
 //    @Scheduled(cron = "0 * * * * *", zone = "Europe/Sofia")
 
     public void DownloadInformation() throws InterruptedException {

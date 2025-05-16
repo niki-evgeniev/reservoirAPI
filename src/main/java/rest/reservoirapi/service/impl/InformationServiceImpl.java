@@ -42,8 +42,6 @@ public class InformationServiceImpl implements InformationService {
 
         List<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
         increaseCounter(lastSavedFile);
-        //TODO CHANGE LIST WITH OPTIONAL
-//        Optional<SavedFiles> lastSavedFile = savedFileRepository.findTopByOrderByIdDesc();
         if (lastSavedFile.isEmpty()) {
             System.err.println("Last added file not exist");
             return List.of();
