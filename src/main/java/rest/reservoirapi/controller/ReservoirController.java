@@ -32,7 +32,6 @@ public class ReservoirController {
         String ipAddress = request.getRemoteAddr();
         List<ReservoirInformation> info = informationService.getLastInfo();
         String formattedDate = getString();
-//        LOGGER.warn("GET Request from {}", ipAddress);
         System.out.println("Sending request from RESERVOIR DETAILS " + formattedDate);
         return ResponseEntity.ok(info);
     }
