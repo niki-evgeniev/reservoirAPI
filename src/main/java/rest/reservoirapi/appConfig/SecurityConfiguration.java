@@ -18,7 +18,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/api/info", "/api/info/{name}").permitAll()
+                        .requestMatchers("/api/info", "/api/info/{name}", "/api/backfill",
+                                "/api/getDiagramInfo/{name}").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
