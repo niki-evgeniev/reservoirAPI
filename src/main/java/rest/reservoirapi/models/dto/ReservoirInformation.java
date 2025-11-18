@@ -23,6 +23,10 @@ public class ReservoirInformation {
 
     private double volumePercentage;
 
+    private double inflow_m3s;
+
+    private double outflow_m3s;
+
     public ReservoirInformation() {
     }
 
@@ -88,5 +92,21 @@ public class ReservoirInformation {
 
     public void setVolumePercentage(double volumePercentage) {
         this.volumePercentage = volumePercentage;
+    }
+
+    public double getInflow_m3s() {
+        return inflow_m3s;
+    }
+
+    public void setInflow_m3s(double inflow_m3s) {
+        this.inflow_m3s = inflow_m3s;
+    }
+
+    public double getOutflow_m3s() {
+        return outflow_m3s;
+    }
+
+    public void setOutflow_m3s(double outflow_m3s) {
+        this.outflow_m3s = outflow_m3s;
     }
 }
