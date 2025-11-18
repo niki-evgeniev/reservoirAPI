@@ -31,18 +31,32 @@ public class Reservoir extends BaseEntity {
     @CreationTimestamp
     private LocalDate addedDate;
 
+    @ManyToOne
+    private WeeklyReport weeklyReport;
+
+    //Общ обем
     @Column(name = "total_volume", nullable = false)
     private double totalVolume;
 
+    //Мъртав обем
     @Column(name = "minimum_flowVolume", nullable = false)
     private double minimumFlowVolume;
 
+    //Общ обем в %
     @Column(name = "fill_percentage", nullable = false)
     private double fillPercentage;
 
+    //наличен полезен обем
     @Column(name = "available_volume", nullable = false)
     private double availableVolume;
 
+    @Column(name = "inflow_m3s")
+    private double inflow_m3s;
+
+    @Column(name = "outflow_m3s")
+    private double outflow_m3s;
+
+    //Общ полезен обем в %
     @Column(name = "volume_percentage", nullable = false)
     private double volumePercentage;
 
@@ -133,6 +147,30 @@ public class Reservoir extends BaseEntity {
 
     public void setSavedFiles(SavedFiles savedFiles) {
         this.savedFiles = savedFiles;
+    }
+
+    public double getInflow_m3s() {
+        return inflow_m3s;
+    }
+
+    public void setInflow_m3s(double inflow_m3s) {
+        this.inflow_m3s = inflow_m3s;
+    }
+
+    public double getOutflow_m3s() {
+        return outflow_m3s;
+    }
+
+    public void setOutflow_m3s(double outflow_m3s) {
+        this.outflow_m3s = outflow_m3s;
+    }
+
+    public WeeklyReport getWeeklyReport() {
+        return weeklyReport;
+    }
+
+    public void setWeeklyReport(WeeklyReport weeklyReport) {
+        this.weeklyReport = weeklyReport;
     }
 }
 
