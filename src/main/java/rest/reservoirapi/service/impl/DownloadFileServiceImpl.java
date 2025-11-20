@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -33,13 +32,28 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     }
 
     @Override
-    public String downloadReservoirInfo() {
-        String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "16052025"; //only for manual download
+    public String downloadReservoirInfoPdf() {
+//        String dateNow = timeServiceImpl.getDateNow();
+        String dateNow = "12112025"; //only for manual download
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.pdf";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.pdf";
+        return getString(pdfUrl, saveDir, fileName);
+    }
+
+    @Override
+    public String downloadReservoirInfoDoc() {
+                String dateNow = timeServiceImpl.getDateNow();
+//        String dateNow = "19112025"; //only for manual download
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
+                + dateNow + "_Bulletin_Daily.doc";
+        String saveDir = "./Download/";
+        String fileName = dateNow + "_bulletin.doc";
+        return getString(pdfUrl, saveDir, fileName);
+    }
+
+    private String getString(String pdfUrl, String saveDir, String fileName) {
         System.out.println(pdfUrl);
         try {
             downloadFile(pdfUrl, saveDir, fileName);
@@ -59,6 +73,8 @@ public class DownloadFileServiceImpl implements DownloadFileService {
         Optional<SavedFiles> isFileDownloaded = savedFileRepository.findByAddedDate(localDate);
         return isFileDownloaded.isPresent();
     }
+
+
 
     public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException,
             InterruptedException {
