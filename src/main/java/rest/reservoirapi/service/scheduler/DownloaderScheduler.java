@@ -20,18 +20,24 @@ public class DownloaderScheduler {
         this.pdfReaderService = pdfReaderService;
     }
 
-//    @Scheduled(cron = "0 0 11,12,13,14,15,16,17,18,19 * * MON-FRI", zone = "Europe/Sofia")
-    @Scheduled(cron = "0 */10 11-19 * * MON-FRI", zone = "Europe/Sofia")
+    @Scheduled(cron = "0 */10 11-21 * * MON-FRI", zone = "Europe/Sofia")
 //    @Scheduled(cron = "0 * * * * *", zone = "Europe/Sofia")
+//    @Scheduled(cron = "* * * * * *", zone = "Europe/Sofia")
+
 
     public void DownloadInformation() throws InterruptedException {
-
         boolean isDownloadFile = downloadFileService.checkFileIsDownload();
+//        boolean isDownloadFile = false;
         if (!isDownloadFile) {
-            String fileName = downloadFileService.downloadReservoirInfo();
+
+            String fileName = downloadFileService.downloadReservoirInfoDoc();
+            if (fileName.equals("error")) {
+                fileName = downloadFileService.downloadReservoirInfoPdf();
+            }
             Thread.sleep(1000);
             if (!fileName.equals("error")) {
-                pdfReaderService.readPdf(fileName);
+//                pdfReaderService.readPdf(fileName);
+                pdfReaderService.readDoc(fileName);
                 LOGGER.info("Successful download file - DownloaderScheduler");
             }
         } else {
