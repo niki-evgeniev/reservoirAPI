@@ -2,7 +2,9 @@ package rest.reservoirapi.service;
 
 public interface DownloadFileService {
 
-    String downloadReservoirInfo();
+    String downloadReservoirInfoPdf();
 
     boolean checkFileIsDownload();
+
+    String downloadReservoirInfoDoc();
 }
