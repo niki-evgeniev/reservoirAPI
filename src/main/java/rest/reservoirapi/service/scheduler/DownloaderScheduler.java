@@ -29,7 +29,6 @@ public class DownloaderScheduler {
         boolean isDownloadFile = downloadFileService.checkFileIsDownload();
 //        boolean isDownloadFile = false;
         if (!isDownloadFile) {
-
             String fileName = downloadFileService.downloadReservoirInfoDoc();
             if (fileName.equals("error")) {
                 fileName = downloadFileService.downloadReservoirInfoPdf();
