@@ -45,7 +45,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Override
     public String downloadReservoirInfoDoc() {
                 String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "27122025"; //only for manual download
+//        String dateNow = "09012026"; //only for manual download
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.doc";
         String saveDir = "./Download/";

@@ -28,7 +28,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
             "Йовковци", "Тича", "Камчия", "Ясна поляна", "Асеновец", "Боровица", "Студена", "Дяково", "Порой", "Ахелой", "Панчарево",
             "Ястребино", "Кула", "Рабиша", "Огоста", "Сопот", "Горни Дъбник", "Бели Лом", "Съединение", "Георги Трайков(Цонево)"
             , "Жребчево", "Малко Шарково", "Домлян", "Пясъчник", "Тополница", "Тракиец", "Пчелина", "Александър Стамболийски",
-            "Копринка", "Белмекен-Чаира", "Белмекен", "Чаира", "Голям Беглик-Широка поляна", "Широка поляна", "Беглика","Голям Беглик",
+            "Копринка", "Белмекен-Чаира", "Белмекен", "Чаира", "Голям Беглик-Широка поляна", "Широка поляна", "Беглика", "Голям Беглик",
             "Тошков Чарк", "Батак", "Доспат", "Цанков камък", "Въча", "Кричим", "Кърджали", "Студен кладенец", "Ивайловград");
     private final ReservoirRepository reservoirRepository;
     private final SavedFileRepository savedFileRepository;
@@ -180,6 +180,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
             List<String> allText = Arrays.stream(getAllLine).toList();
 
             int index = 76;
+
             System.out.println(allText.size());
             for (int i = index; i <= allText.size() - 1; i++) {
                 if (index + 8 >= allText.size()) {
@@ -188,6 +189,14 @@ public class PdfReaderServiceImpl implements PdfReaderService {
                 String name = allText.get(index).trim();
                 if (name.startsWith("Георги Трайков")) {
                     name = "Георги Трайков(Цонево)";
+                }
+
+                if (name.contains("***")) {
+                    name = name.replace("***", "").trim();
+                } else if (name.contains("**")) {
+                    name = name.replace("**", "").trim();
+                } else if (name.contains("*")) {
+                    name = name.replace("*", "").trim();
                 }
                 if (nameOfReservoir.contains(name)) {
                     Reservoir reservoir = new Reservoir();
