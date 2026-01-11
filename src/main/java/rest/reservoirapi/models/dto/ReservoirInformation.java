@@ -10,6 +10,7 @@ public class ReservoirInformation {
     private String name;
 
     private UUID uuid;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate addedDate;
 

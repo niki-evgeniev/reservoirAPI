@@ -27,7 +27,6 @@ public class Reservoir extends BaseEntity {
 
     @Column(name = "added_date", nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @CreationTimestamp
     private LocalDate addedDate;
 

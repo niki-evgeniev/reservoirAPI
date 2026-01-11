@@ -12,7 +12,6 @@ import java.util.List;
 @RequestMapping("/api")
 public class WeeklyReportController {
 
-
     private final WeeklyReportService weeklyReportService;
     List<String> nameOfReservoir = List.of(
             "Искър", "Бели Искър", "Среченска бара", "Христо Смирненски", "Йовковци", "Тича", "Камчия",
@@ -26,7 +25,6 @@ public class WeeklyReportController {
 
     public WeeklyReportController(WeeklyReportService weeklyReportService) {
         this.weeklyReportService = weeklyReportService;
-
     }
 
     @PostMapping("/backfill")

@@ -1,6 +1,5 @@
 package rest.reservoirapi.controller;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,6 @@ public class ReservoirController {
         System.out.println("Sending request from RESERVOIR DETAILS " + formattedDate);
         return ResponseEntity.ok(info);
     }
-
 
     @GetMapping("/info/{name}")
     ResponseEntity<?> getReservoirInfo(@PathVariable("name") String name) {

@@ -10,4 +10,5 @@ public interface WeeklyReportService {
     int collectLast12WeeksInfo(LocalDate mondayStart, List<String> names);
 
     List<WeeklyReportDTO> getDiagramInfo(String name);
+
 }
