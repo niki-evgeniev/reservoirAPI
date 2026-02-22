@@ -44,7 +44,7 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public String downloadReservoirInfoDoc() {
-                String dateNow = timeServiceImpl.getDateNow();
+        String dateNow = timeServiceImpl.getDateNow();
 //        String dateNow = "09012026"; //only for manual download
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.doc";
@@ -75,9 +75,12 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     }
 
 
-
     public static void downloadFile(String fileURL, String saveDir, String fileName) throws IOException,
             InterruptedException {
+
+        // Enable AIA fetching so Java can download missing intermediate CA certificates.
+        System.setProperty("com.sun.security.enableAIAcaIssuers", "true");
+
         URI uri = URI.create(fileURL);
         HttpClient client = HttpClient.newHttpClient();
 
