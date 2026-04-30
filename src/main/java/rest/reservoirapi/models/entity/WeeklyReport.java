@@ -22,7 +22,6 @@ public class WeeklyReport extends BaseEntity {
     private String usefulVolume;
 
     @Column(name = "date", columnDefinition = "DATETIME(0)")
-
     private LocalDate date;
 
     @Column(name = "create_at")

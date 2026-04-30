@@ -42,12 +42,6 @@ spring:
           auth: true
           starttls:
             enable: true
-
-  #Cloudinary Properties
-  #cloudinary:
-  #api-key:
-  #api-secret:
-  #cloud-name:
   thymeleaf: # Thymeleaf
     cache: false
     mode: HTML
