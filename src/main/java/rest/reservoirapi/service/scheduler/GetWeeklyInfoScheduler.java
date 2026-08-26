@@ -27,8 +27,8 @@ public class GetWeeklyInfoScheduler {
         this.weeklyReportService = weeklyReportService;
     }
 
-        @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
-//    @Scheduled(cron = "*/1 * * * * *", zone = "Europe/Sofia")
+//        @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
+    @Scheduled(cron = "*/55 * * * * *", zone = "Europe/Sofia")
     public void getWeeklyInformation() {
 //        LocalDate mondayStart = LocalDate.of(2025, 10, 13);
         LocalDate today = LocalDate.now();
