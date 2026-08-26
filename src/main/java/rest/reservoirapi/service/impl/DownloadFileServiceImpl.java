@@ -34,9 +34,13 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Override
     public String downloadReservoirInfoPdf() {
         String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "12112025"; //only for manual download
-        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
+//        String dateNow = "11082026"; //only for manual download
+//        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
+//                + dateNow + "_Bulletin_Daily.pdf";
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/"
                 + dateNow + "_Bulletin_Daily.pdf";
+//        "/static/media/ups/tiny/water_bulletin/11082026_Bulletin_Daily.pdf"
+//        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/12082026_Bulletin_Daily-1.pdf";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.pdf";
         return getString(pdfUrl, saveDir, fileName);
@@ -44,8 +48,13 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public String downloadReservoirInfoDoc() {
+<<<<<<< HEAD
         String dateNow = timeServiceImpl.getDateNow();
 //        String dateNow = "21072026"; //only for manual download
+=======
+//        String dateNow = timeServiceImpl.getDateNow();
+        String dateNow = "11082026"; //only for manual download
+>>>>>>> 23f78fd6f9e3409e0a12dd969d81b08e360a8900
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.doc";
         String saveDir = "./Download/";
