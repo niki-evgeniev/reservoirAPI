@@ -2,7 +2,6 @@ package rest.reservoirapi.service.impl;
 
 
 import org.springframework.stereotype.Service;
-import rest.reservoirapi.models.entity.SavedFiles;
 import rest.reservoirapi.repository.SavedFileRepository;
 import rest.reservoirapi.service.DownloadFileService;
 
@@ -16,12 +15,14 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Service
 public class DownloadFileServiceImpl implements DownloadFileService {
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
 
     private final TimeServiceImpl timeServiceImpl;
     private final SavedFileRepository savedFileRepository;
@@ -33,14 +34,9 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public String downloadReservoirInfoPdf() {
-        String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "11082026"; //only for manual download
-//        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
-//                + dateNow + "_Bulletin_Daily.pdf";
+        String dateNow = getDateToDownload();
         String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/"
                 + dateNow + "_Bulletin_Daily.pdf";
-//        "/static/media/ups/tiny/water_bulletin/11082026_Bulletin_Daily.pdf"
-//        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/12082026_Bulletin_Daily-1.pdf";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.pdf";
         return getString(pdfUrl, saveDir, fileName);
@@ -48,14 +44,8 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public String downloadReservoirInfoDoc() {
-<<<<<<< HEAD
-        String dateNow = timeServiceImpl.getDateNow();
-//        String dateNow = "21072026"; //only for manual download
-=======
-//        String dateNow = timeServiceImpl.getDateNow();
-        String dateNow = "11082026"; //only for manual download
->>>>>>> 23f78fd6f9e3409e0a12dd969d81b08e360a8900
-        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
+        String dateNow = getDateToDownload();
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/"
                 + dateNow + "_Bulletin_Daily.doc";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.doc";
@@ -76,11 +66,36 @@ public class DownloadFileServiceImpl implements DownloadFileService {
 
     @Override
     public boolean checkFileIsDownload() {
-        String dateNow = timeServiceImpl.getDateNow();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-        LocalDate localDate = LocalDate.parse(dateNow, formatter);
-        Optional<SavedFiles> isFileDownloaded = savedFileRepository.findByAddedDate(localDate);
-        return isFileDownloaded.isPresent();
+        LocalDate dateToDownload = LocalDate.parse(getDateToDownload(), DATE_FORMATTER);
+        return isFileDownloaded(dateToDownload);
+    }
+
+    @Override
+    public String getDateToDownload() {
+        LocalDate today = LocalDate.parse(timeServiceImpl.getDateNow(), DATE_FORMATTER);
+        LocalDate latestWorkingDay = moveToPreviousWorkingDayIfNeeded(today);
+        LocalDate previousWorkingDay = moveToPreviousWorkingDayIfNeeded(latestWorkingDay.minusDays(1));
+
+        if (!isFileDownloaded(previousWorkingDay)) {
+            return previousWorkingDay.format(DATE_FORMATTER);
+        }
+
+        return latestWorkingDay.format(DATE_FORMATTER);
+    }
+
+    private LocalDate moveToPreviousWorkingDayIfNeeded(LocalDate date) {
+        LocalDate workingDay = date;
+        while (workingDay.getDayOfWeek() == DayOfWeek.SATURDAY
+                || workingDay.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            workingDay = workingDay.minusDays(1);
+        }
+        return workingDay;
+    }
+
+    private boolean isFileDownloaded(LocalDate date) {
+        String dateAsText = date.format(DATE_FORMATTER);
+        return savedFileRepository.findByFileName(dateAsText + "_bulletin.doc").isPresent()
+                || savedFileRepository.findByFileName(dateAsText + "_bulletin.pdf").isPresent();
     }
 
 

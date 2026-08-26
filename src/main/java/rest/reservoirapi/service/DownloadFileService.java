@@ -7,4 +7,6 @@ public interface DownloadFileService {
     boolean checkFileIsDownload();
 
     String downloadReservoirInfoDoc();
+
+    String getDateToDownload();
 }

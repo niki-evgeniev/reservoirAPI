@@ -27,13 +27,12 @@ public class GetWeeklyInfoScheduler {
         this.weeklyReportService = weeklyReportService;
     }
 
-<<<<<<< HEAD
-//        @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
-    @Scheduled(cron = "*/55 * * * * *", zone = "Europe/Sofia")
-=======
-        @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
+
+    //        @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
+//    @Scheduled(cron = "*/55 * * * * *", zone = "Europe/Sofia")
+    @Scheduled(cron = "0 0 20 * * MON", zone = "Europe/Sofia")
 //    @Scheduled(cron = "1 * * * * *", zone = "Europe/Sofia")
->>>>>>> 23f78fd6f9e3409e0a12dd969d81b08e360a8900
+
     public void getWeeklyInformation() {
 //        LocalDate mondayStart = LocalDate.of(2025, 10, 13);
         LocalDate today = LocalDate.now();
@@ -42,7 +41,7 @@ public class GetWeeklyInfoScheduler {
         System.out.println("Start day is : " + mondayStart);
         long start = System.currentTimeMillis();
         int n = weeklyReportService.collectLast12WeeksInfo(mondayStart, names);
-        long end  = System.currentTimeMillis();
+        long end = System.currentTimeMillis();
         System.out.println("All executing reservoirs diagrams is : " + n + " from 576");
         System.out.printf("Time to executing method is %s millisecond %n", end - start);
     }
