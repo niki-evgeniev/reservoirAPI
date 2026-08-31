@@ -45,7 +45,9 @@ public class DownloadFileServiceImpl implements DownloadFileService {
     @Override
     public String downloadReservoirInfoDoc() {
         String dateNow = getDateToDownload();
-        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/"
+//        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/water_bulletin/"
+//                + dateNow + "_Bulletin_Daily.doc";
+        String pdfUrl = "https://www.moew.government.bg/static/media/ups/tiny/Daily%20Bulletin/"
                 + dateNow + "_Bulletin_Daily.doc";
         String saveDir = "./Download/";
         String fileName = dateNow + "_bulletin.doc";
