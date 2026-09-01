@@ -26,8 +26,8 @@ public class DownloaderScheduler {
         this.pdfReaderService = pdfReaderService;
     }
 
-    @Scheduled(cron = "0 */10 11-21 * * MON-FRI", zone = "Europe/Sofia")
-//    @Scheduled(cron = "0 * * * * *", zone = "Europe/Sofia")
+//    @Scheduled(cron = "0 */10 11-21 * * MON-FRI", zone = "Europe/Sofia")
+    @Scheduled(cron = "0 * * * * *", zone = "Europe/Sofia")
 //    @Scheduled(cron = "* * * * * *", zone = "Europe/Sofia")
 
 
