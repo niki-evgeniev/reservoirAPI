@@ -19,10 +19,13 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
 public class PdfReaderServiceImpl implements PdfReaderService {
+
+    private static final DateTimeFormatter FILE_DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
 
     private final List<String> nameOfReservoir = List.of("Искър", "Бели Искър", "Среченска бара", "Христо Смирненски",
             "Йовковци", "Тича", "Камчия", "Ясна поляна", "Асеновец", "Боровица", "Студена", "Дяково", "Порой", "Ахелой", "Панчарево",
@@ -42,6 +45,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
     public void readPdf(String filepath) {
 
         String fileName = "./Download/" + filepath;
+        LocalDate bulletinDate = getBulletinDate(filepath);
 //        String fileName = "./Download/" + "12112025_bulletin.pdf"; //only for manual read
         File file = new File(fileName);
         System.out.println(nameOfReservoir.size());
@@ -61,7 +65,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
 
                 if (byFileName.isEmpty()) {
                     savedFiles.setFileName(filepath);
-                    savedFiles.setAddedDate(LocalDate.now());
+                    savedFiles.setAddedDate(bulletinDate);
 
                 } else {
                     System.err.println("FILE IN DB EXIST");
@@ -112,6 +116,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
                     if (valueOfReservoir.size() == 7) {
                         reservoir.setUuid(UUID.randomUUID());
                         reservoir.setName(name);
+                        reservoir.setAddedDate(bulletinDate);
                         reservoir.setActive(true);
                         reservoir.setTotalVolume(valueOfReservoir.get(0));
                         reservoir.setMinimumFlowVolume(valueOfReservoir.get(1));
@@ -140,6 +145,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
     @Override
     public void readDoc(String fileName) {
         String fullPath = "./Download/" + fileName;
+        LocalDate bulletinDate = getBulletinDate(fileName);
         File file = new File(fullPath);
         System.out.println(nameOfReservoir.size());
 
@@ -171,7 +177,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
 
             if (byFileName.isEmpty()) {
                 savedFiles.setFileName(fileName);
-                savedFiles.setAddedDate(LocalDate.now());
+                savedFiles.setAddedDate(bulletinDate);
 
             } else {
                 System.err.println("FILE IN DB EXIST");
@@ -202,6 +208,7 @@ public class PdfReaderServiceImpl implements PdfReaderService {
                     Reservoir reservoir = new Reservoir();
                     reservoir.setUuid(UUID.randomUUID());
                     reservoir.setName(name);
+                    reservoir.setAddedDate(bulletinDate);
                     reservoir.setActive(true);
                     index++;
                     reservoir.setTotalVolume(Double.parseDouble(allText.get(index)
@@ -251,6 +258,11 @@ public class PdfReaderServiceImpl implements PdfReaderService {
         } catch (IOException e) {
             System.err.println("Error loading DOC: " + e.getMessage());
         }
+    }
+
+    private LocalDate getBulletinDate(String fileName) {
+        String dateFromFileName = fileName.substring(0, fileName.indexOf('_'));
+        return LocalDate.parse(dateFromFileName, FILE_DATE_FORMATTER);
     }
 
     private static Result getReservoirDetails(String[] wordSplit, int indexWordSplit) {
